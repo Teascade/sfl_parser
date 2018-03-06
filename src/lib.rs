@@ -9,11 +9,16 @@ pub struct BMCharacter {
     pub y: u32,
     pub width: u32,
     pub height: u32,
+    pub xoffset: u32,
+    pub yoffset: u32,
+    pub xadvance: u32,
 }
 
 pub struct BMFont {
     pub font_name: String,
     pub chars: HashMap<u32, BMCharacter>,
+    pub line_height: u32,
+    pub size: u32,
 }
 
 impl BMFont {
@@ -33,8 +38,33 @@ impl BMFont {
             return Err("Erronous .sfl file; too few lines to initialize.".to_owned());
         }
 
+        // Take font name from first line
         let font_name = lines.next().unwrap().to_owned();
-        let mut lines = lines.skip(2); // Skip two lines, nothing interesting there.
+
+        // Take line height and font size from second line
+        let line_h_and_size = lines.next().unwrap().to_owned();
+        let mut parts = line_h_and_size.split(' ');
+        let line_height;
+        let size;
+        if parts.clone().count() == 2 {
+            match parts.nth(0).unwrap().parse::<u32>() {
+                Ok(number) => line_height = number,
+                Err(error) => return Err(format!("Error parsing line height: '{}'", error)),
+            }
+            match parts.nth(1).unwrap().parse::<u32>() {
+                Ok(number) => size = number,
+                Err(error) => return Err(format!("Error parsing size: '{}'", error)),
+            }
+        } else {
+            return Err(format!(
+                "Second line does not contain two values formatted as 'line-height size'"
+            ));
+        }
+
+        // Skip image name, not saved for now at least.
+        let mut lines = lines.skip(1);
+
+        // Read characters
         let character_amount;
         match lines.next().unwrap().to_owned().parse::<u32>() {
             Ok(amount) => character_amount = amount,
@@ -54,7 +84,12 @@ impl BMFont {
             };
         }
 
-        return Ok(BMFont { font_name, chars });
+        return Ok(BMFont {
+            font_name,
+            chars,
+            line_height,
+            size,
+        });
     }
 
     fn read_character(line: String, line_number: u32) -> Result<BMCharacter, String> {
@@ -85,6 +120,9 @@ impl BMFont {
             y: numbers[2],
             width: numbers[3],
             height: numbers[4],
+            xoffset: numbers[5],
+            yoffset: numbers[6],
+            xadvance: numbers[7],
         })
     }
 }
