@@ -44,15 +44,15 @@ impl BMFont {
         // Take line height and font size from second line
         let line_h_and_size = lines.next().unwrap().to_owned();
         let mut parts = line_h_and_size.split(' ');
-        let line_height;
         let size;
+        let line_height;
         if parts.clone().count() == 2 {
             match parts.nth(0).unwrap().parse::<u32>() {
-                Ok(number) => line_height = number,
+                Ok(number) => size = number,
                 Err(error) => return Err(format!("Error parsing line height: '{}'", error)),
             }
             match parts.nth(1).unwrap().parse::<u32>() {
-                Ok(number) => size = number,
+                Ok(number) => line_height = number,
                 Err(error) => return Err(format!("Error parsing size: '{}'", error)),
             }
         } else {
