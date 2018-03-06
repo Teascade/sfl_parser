@@ -51,7 +51,7 @@ impl BMFont {
                 Ok(number) => size = number,
                 Err(error) => return Err(format!("Error parsing line height: '{}'", error)),
             }
-            match parts.nth(1).unwrap().parse::<u32>() {
+            match parts.nth(0).unwrap().parse::<u32>() {
                 Ok(number) => line_height = number,
                 Err(error) => return Err(format!("Error parsing size: '{}'", error)),
             }
@@ -101,8 +101,8 @@ impl BMFont {
             ));
         }
 
-        let mut numbers: Vec<u32> = vec![0; 5];
-        for i in 0..5 {
+        let mut numbers: Vec<u32> = vec![0; 8];
+        for i in 0..8 {
             match parts.nth(0).unwrap().parse::<u32>() {
                 Ok(number) => numbers[i] = number,
                 Err(_) => {
