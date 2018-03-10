@@ -2,6 +2,8 @@
 //!
 //! # Examples
 //! ```
+//! use sfl_parser::BMFont;
+//!
 //! let bmfont = match BMFont::load_and_parse("examples/fonts/iosevka.sfl") {
 //!     Ok(bmfont) => bmfont,
 //!     Err(_) => panic!("Failed to load iosevka.sfl"),
@@ -44,7 +46,7 @@ pub struct BMFont {
     pub font_name: String,
     /// The path of the image atlas for the font.
     pub image_path: PathBuf,
-    /// Hashmap of the characters in the font. <CharID, [`BMCharacter`][bmcharacter]>
+    /// Hashmap of the characters in the font. &ltCharID, [`BMCharacter`][bmcharacter]&gt
     ///
     /// [bmcharacter]: struct.BMCharacter.html
     pub chars: HashMap<u32, BMCharacter>,
@@ -59,6 +61,8 @@ impl BMFont {
     ///
     /// # Examples
     /// ```
+    /// use sfl_parser::BMFont;
+    ///
     /// let bmfont = match BMFont::load_and_parse("examples/fonts/iosevka.sfl") {
     ///     Ok(bmfont) => bmfont,
     ///     Err(_) => panic!("Failed to load iosevka.sfl"),
@@ -67,7 +71,7 @@ impl BMFont {
     /// println!("bmfont: {}", bmfont);
     /// ```
     pub fn load_and_parse<T: Into<PathBuf>>(path: T) -> Result<BMFont, String> {
-        let mut path = path.into();
+        let path = path.into();
         let mut file;
         match File::open(&path) {
             Ok(f) => file = f,
