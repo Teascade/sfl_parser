@@ -12,6 +12,9 @@
 //! println!("bmfont: {}", bmfont);
 //! ```
 
+#[cfg(test)]
+mod tests;
+
 use std::fmt::{Display, Formatter};
 use std::fs::File;
 use std::path::PathBuf;
