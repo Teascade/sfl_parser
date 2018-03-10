@@ -1,6 +1,16 @@
 [package]
 name = "sfl_parser"
+description = "Lightweight and easy-to-use bitmap font (.sfl) parser"
 version = "1.0.0"
 authors = ["Teascade <teascade@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+keywords = ["bitmap", "parser", "bmfont", "sfl", "font"]
+categories = ["parsing"]
+repository = "https://github.com/Teascade/sfl_parser"
+documentation = "https://docs.rs/sfl_parser"
+
+[badges]
+travis-ci = { repository = "teascade/sfl_parser", branch = "1.0.0" }
 
 [dependencies]
