@@ -194,7 +194,7 @@ impl Display for BMFont {
             self.image_path,
             self.line_height,
             self.size,
-            self.chars.capacity()
+            self.chars.len()
         )
     }
 }
