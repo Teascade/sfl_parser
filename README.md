@@ -1,6 +1,6 @@
 # sfl_parser
 
-[![Build Status](https://travis-ci.org/Teascade/sfl_parser.svg?branch=1.0.2)](https://travis-ci.org/Teascade/sfl_parser)
+[![Build Status](https://travis-ci.org/Teascade/sfl_parser.svg?branch=1.1.0)](https://travis-ci.org/Teascade/sfl_parser)
 [![Docs](https://docs.rs/sfl_parser/badge.svg)](https://docs.rs/sfl_parser)
 [![Crates.io](https://img.shields.io/crates/v/sfl_parser.svg)](https://crates.io/crates/sfl_parser)
 
@@ -12,7 +12,7 @@ Documentation at [docs.rs][docs] or simply:
 1. Add the following to your dependencies:  
    ```toml
    [dependencies]
-   sfl_parser="1.0"
+   sfl_parser="1.1"
    ```
 2. To your Rust project add the following line:
    ```rust
@@ -22,7 +22,7 @@ Documentation at [docs.rs][docs] or simply:
    ```rust
    use sfl_parser::BMFont;
 
-   let bmfont = match BMFont::load_and_parse("examples/fonts/iosevka.sfl") {
+   let bmfont = match BMFont::from_path("examples/fonts/iosevka.sfl") {
        Ok(bmfont) => bmfont,
        Err(_) => panic!("Failed to load iosevka.sfl"),
    };

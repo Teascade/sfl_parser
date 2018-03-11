@@ -4,7 +4,7 @@
 //! ```
 //! use sfl_parser::BMFont;
 //!
-//! let bmfont = match BMFont::load_and_parse("examples/fonts/iosevka.sfl") {
+//! let bmfont = match BMFont::from_path("examples/fonts/iosevka.sfl") {
 //!     Ok(bmfont) => bmfont,
 //!     Err(_) => panic!("Failed to load iosevka.sfl"),
 //! };
@@ -19,7 +19,7 @@ use std::fmt::{Display, Formatter};
 use std::fs::File;
 use std::path::PathBuf;
 use std::collections::HashMap;
-use std::io::Read;
+use std::io::{Error, ErrorKind, Read};
 
 /// Represents a single character in the bitmap font atlas. Contains coordinates, sizes, offsets and advances (everything required to render letters from the atlas).
 #[derive(Debug)]
@@ -66,27 +66,26 @@ impl BMFont {
     /// ```
     /// use sfl_parser::BMFont;
     ///
-    /// let bmfont = match BMFont::load_and_parse("examples/fonts/iosevka.sfl") {
+    /// let bmfont = match BMFont::from_path("examples/fonts/iosevka.sfl") {
     ///     Ok(bmfont) => bmfont,
     ///     Err(_) => panic!("Failed to load iosevka.sfl"),
     /// };
     ///
     /// println!("bmfont: {}", bmfont);
     /// ```
-    pub fn load_and_parse<T: Into<PathBuf>>(path: T) -> Result<BMFont, String> {
+    pub fn from_path<T: Into<PathBuf>>(path: T) -> Result<BMFont, Error> {
         let path = path.into();
-        let mut file;
-        match File::open(&path) {
-            Ok(f) => file = f,
-            Err(error) => return Err(format!("Error while loading .sfl file: {}", error)),
-        }
+        let mut file = File::open(&path)?;
 
         let mut buffer = String::new();
         file.read_to_string(&mut buffer).unwrap();
         let mut lines = buffer.lines();
 
         if lines.clone().count() < 5 {
-            return Err("Erronous .sfl file; too few lines to initialize.".to_owned());
+            return Err(Error::new(
+                ErrorKind::Other,
+                "Erronous .sfl file; too few lines to initialize.",
+            ));
         }
 
         // Take font name from first line
@@ -99,15 +98,26 @@ impl BMFont {
         if parts.clone().count() == 2 {
             match parts.nth(0).unwrap().parse::<u32>() {
                 Ok(number) => size = number,
-                Err(error) => return Err(format!("Error parsing line height: '{}'", error)),
+                Err(error) => {
+                    return Err(Error::new(
+                        ErrorKind::Other,
+                        format!("Error parsing line height: '{}'", error),
+                    ))
+                }
             }
             match parts.nth(0).unwrap().parse::<u32>() {
                 Ok(number) => line_height = number,
-                Err(error) => return Err(format!("Error parsing size: '{}'", error)),
+                Err(error) => {
+                    return Err(Error::new(
+                        ErrorKind::Other,
+                        format!("Error parsing size: '{}'", error),
+                    ))
+                }
             }
         } else {
-            return Err(format!(
-                "Second line does not contain two values formatted as 'line-height size'"
+            return Err(Error::new(
+                ErrorKind::Other,
+                format!("Second line does not contain two values formatted as 'line-height size'"),
             ));
         }
 
@@ -118,18 +128,27 @@ impl BMFont {
             image_path = path.to_path_buf();
             image_path.push(image_name);
         } else {
-            return Err(format!("Unable to retrieve path parent."));
+            return Err(Error::new(
+                ErrorKind::Other,
+                format!("Unable to retrieve path parent."),
+            ));
         }
 
         // Read characters
         let character_amount;
         match lines.next().unwrap().to_owned().parse::<u32>() {
             Ok(amount) => character_amount = amount,
-            Err(_) => return Err(format!("Error while parsing character amount at line: 4")),
+            Err(_) => {
+                return Err(Error::new(
+                    ErrorKind::Other,
+                    format!("Error while parsing character amount at line: 4"),
+                ))
+            }
         }
 
         if lines.clone().count() + 5 < 5 + character_amount as usize {
-            return Err(format!("Erronous .sfl file; character amount (line 4) does not match actual character amount; is {}, should be {}", lines.count() + 5, 5 + character_amount));
+            return Err(Error::new(
+                ErrorKind::Other, format!("Erronous .sfl file; character amount (line 4) does not match actual character amount; is {}, should be {}", lines.count() + 5, 5 + character_amount)));
         }
 
         let mut chars = HashMap::<u32, BMCharacter>::new();
@@ -137,7 +156,7 @@ impl BMFont {
             let character = BMFont::read_character(lines.next().unwrap().to_owned(), i + 1);
             match character {
                 Ok(ch) => chars.insert(ch.id, ch),
-                Err(error) => return Err(error),
+                Err(error) => return Err(Error::new(ErrorKind::Other, error)),
             };
         }
 

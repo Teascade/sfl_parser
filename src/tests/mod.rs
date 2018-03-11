@@ -4,7 +4,7 @@ mod bmcharacter;
 use super::BMFont;
 
 pub fn setup() -> BMFont {
-    match BMFont::load_and_parse("examples/fonts/iosevka.sfl") {
+    match BMFont::from_path("examples/fonts/iosevka.sfl") {
         Ok(bmfont) => bmfont,
         Err(_) => panic!("Failed to load iosevka.sfl"),
     }
