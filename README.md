@@ -1,6 +1,6 @@
 # sfl_parser
 
-[![Build Status](https://travis-ci.org/Teascade/sfl_parser.svg?branch=1.0.1)](https://travis-ci.org/Teascade/sfl_parser)
+[![Build Status](https://travis-ci.org/Teascade/sfl_parser.svg?branch=1.0.2)](https://travis-ci.org/Teascade/sfl_parser)
 [![Docs](https://docs.rs/sfl_parser/badge.svg)](https://docs.rs/sfl_parser)
 
 A lightweight and easy-to-use .sfl file (bitmap font) parser made with Rust.
