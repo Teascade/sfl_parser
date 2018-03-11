@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/Teascade/sfl_parser.svg?branch=1.0.2)](https://travis-ci.org/Teascade/sfl_parser)
 [![Docs](https://docs.rs/sfl_parser/badge.svg)](https://docs.rs/sfl_parser)
+[![Crates.io](https://img.shields.io/crates/v/sfl_parser.svg)](https://crates.io/crates/sfl_parser)
 
 A lightweight and easy-to-use .sfl file (bitmap font) parser made with Rust.
 
@@ -33,4 +34,4 @@ Documentation at [docs.rs][docs] or simply:
 This crate is distributed under the terms of [the MIT License][license].
 
 [license]: LICENSE.md
-[docs]: https://dosc.rs/sfl_parser
+[docs]: https://docs.rs/sfl_parser
