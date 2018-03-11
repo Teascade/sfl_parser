@@ -11,6 +11,6 @@ repository = "https://github.com/Teascade/sfl_parser"
 documentation = "https://docs.rs/sfl_parser"
 
 [badges]
-travis-ci = { repository = "teascade/sfl_parser", branch = "1.0.1" }
+travis-ci = { repository = "Teascade/sfl_parser", branch = "1.0.1" }
 
 [dependencies]
