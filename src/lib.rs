@@ -25,21 +25,21 @@ use std::io::{Error, ErrorKind, Read};
 #[derive(Debug)]
 pub struct BMCharacter {
     /// char id of the character.
-    pub id: u32,
+    pub id: i32,
     /// x-position of the character on the atlas.
-    pub x: u32,
+    pub x: i32,
     /// y-position of the character on the atlas.
-    pub y: u32,
+    pub y: i32,
     /// Width of the character on the atlas.
-    pub width: u32,
+    pub width: i32,
     /// Height of the character.
-    pub height: u32,
+    pub height: i32,
     /// x-offset of the character.
-    pub xoffset: u32,
+    pub xoffset: i32,
     /// y-offset of the character.
-    pub yoffset: u32,
+    pub yoffset: i32,
     /// x-advance of the character.
-    pub xadvance: u32,
+    pub xadvance: i32,
 }
 
 /// Loaded and parsed struct of an .sfl file (a bitmap font file).
@@ -155,7 +155,7 @@ impl BMFont {
         for i in 0..character_amount {
             let character = BMFont::read_character(lines.next().unwrap().to_owned(), i + 1);
             match character {
-                Ok(ch) => chars.insert(ch.id, ch),
+                Ok(ch) => chars.insert(ch.id as u32, ch),
                 Err(error) => return Err(Error::new(ErrorKind::Other, error)),
             };
         }
@@ -178,9 +178,9 @@ impl BMFont {
             ));
         }
 
-        let mut numbers: Vec<u32> = vec![0; 8];
+        let mut numbers: Vec<i32> = vec![0; 8];
         for i in 0..8 {
-            match parts.nth(0).unwrap().parse::<u32>() {
+            match parts.nth(0).unwrap().parse::<i32>() {
                 Ok(number) => numbers[i] = number,
                 Err(_) => {
                     return Err(format!(
