@@ -78,8 +78,53 @@ impl BMFont {
         let mut file = File::open(&path)?;
 
         let mut buffer = String::new();
-        file.read_to_string(&mut buffer).unwrap();
-        let mut lines = buffer.lines();
+        file.read_to_string(&mut buffer)?;
+
+        let mut bmfont = BMFont::load_sfl(buffer)?;
+
+        if let Some(path) = path.parent() {
+            let mut image_path = path.to_path_buf();
+            image_path.push(bmfont.image_path);
+            bmfont.image_path = image_path;
+        } else {
+            return Err(Error::new(
+                ErrorKind::Other,
+                format!("Unable to retrieve path parent."),
+            ));
+        }
+
+        Ok(bmfont)
+    }
+
+    /// Load and parse a `BMFont` from the given `String`, which should be the contents of an .sfl file.
+    ///
+    /// # Examples
+    /// ```
+    /// use sfl_parser::BMFont;
+    ///
+    /// let iosevka_sfl = include_str!("../examples/fonts/iosevka.sfl");
+    ///
+    /// let bmfont = match BMFont::from_loaded(iosevka_sfl, "examples/fonts/iosevka.png") {
+    ///     Ok(bmfont) => bmfont,
+    ///     Err(_) => panic!("Failed to load iosevka.sfl"),
+    /// };
+    ///
+    /// println!("bmfont: {}", bmfont);
+    /// ```
+    pub fn from_loaded<T: Into<String>>(sfl_contents: T, image_path: T) -> Result<BMFont, Error> {
+        let mut bmfont = BMFont::load_sfl(sfl_contents)?;
+
+        let mut pathbuf = PathBuf::new();
+        pathbuf.push(image_path.into());
+
+        bmfont.image_path = pathbuf;
+
+        Ok(bmfont)
+    }
+
+    fn load_sfl<T: Into<String>>(sfl_contents: T) -> Result<BMFont, Error> {
+        let sfl_contents = sfl_contents.into();
+        let mut lines = sfl_contents.lines();
 
         if lines.clone().count() < 5 {
             return Err(Error::new(
@@ -123,16 +168,8 @@ impl BMFont {
 
         // Read image path
         let image_name = lines.next().unwrap().to_owned();
-        let mut image_path;
-        if let Some(path) = path.parent() {
-            image_path = path.to_path_buf();
-            image_path.push(image_name);
-        } else {
-            return Err(Error::new(
-                ErrorKind::Other,
-                format!("Unable to retrieve path parent."),
-            ));
-        }
+        let mut image_path = PathBuf::new();
+        image_path.push(image_name);
 
         // Read characters
         let character_amount;

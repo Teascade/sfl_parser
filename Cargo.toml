@@ -1,7 +1,7 @@
 [package]
 name = "sfl_parser"
 description = "Lightweight and easy-to-use bitmap font (.sfl) parser"
-version = "1.2.0"
+version = "1.3.0"
 authors = ["Teascade <teascade@gmail.com>"]
 license = "MIT"
 readme = "README.md"
