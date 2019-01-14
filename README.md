@@ -4,6 +4,8 @@
 [![Docs](https://docs.rs/sfl_parser/badge.svg)](https://docs.rs/sfl_parser)
 [![Crates.io](https://img.shields.io/crates/v/sfl_parser.svg)](https://crates.io/crates/sfl_parser)
 
+## sfl_parser has permanently moved to [`bmfont_parser`](https://github.com/teascade/bmfont_parser), as the name has grown inaccurate to the functionality of this crate
+
 A lightweight and easy-to-use .sfl file (bitmap font) parser made with Rust.
 
 ### How to use
