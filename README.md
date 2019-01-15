@@ -1,6 +1,6 @@
 # sfl_parser
 
-[![Build Status](https://travis-ci.org/Teascade/sfl_parser.svg?branch=1.3.0)](https://travis-ci.org/Teascade/sfl_parser)
+[![Build Status](https://travis-ci.org/Teascade/sfl_parser.svg?branch=1.3.1)](https://travis-ci.org/Teascade/sfl_parser)
 [![Docs](https://docs.rs/sfl_parser/badge.svg)](https://docs.rs/sfl_parser)
 [![Crates.io](https://img.shields.io/crates/v/sfl_parser.svg)](https://crates.io/crates/sfl_parser)
 
